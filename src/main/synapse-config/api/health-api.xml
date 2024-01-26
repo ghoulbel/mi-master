@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/mi" name="health-api" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET" uri-template="/health">
+        <inSequence>
+            <log level="custom" category="DEBUG">
+                <property name="/mi/health" value="inSequence"/>
+            </log>
+            <payloadFactory media-type="json">
+                <format>
+                    {
+                        "status": "UP"
+                    }
+                </format>
+                <args></args>
+            </payloadFactory>
+            <respond />
+        </inSequence>
+        <outSequence>
+            <respond />
+        </outSequence>
+        <faultSequence>
+            <respond />
+        </faultSequence>
+    </resource>
+    <resource methods="POST" uri-template="/input">
+        <inSequence>
+            <log level="custom" category="INFO">
+                <property name="/mi/input" value="inSequence" />
+            </log>
+            <log level="full" />
+            <respond />
+        </inSequence>
+        <outSequence />
+        <faultSequence />
+    </resource>
+</api>

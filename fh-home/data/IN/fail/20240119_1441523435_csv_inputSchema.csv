@@ -1,0 +1,4 @@
+Code,Wert,Beschreibung
+Z,0.00,"Zero-rated, keine MwSt"
+R,2.50,"Lower (reduced) rate, reduzierter MwSt Satz. In Onix 3 muss dieser für EU grösser 5% sein"
+S,7.70,"Standard rate, normaler MwSt Satz"

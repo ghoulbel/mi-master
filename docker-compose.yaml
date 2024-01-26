@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  mi:
+    image: ghcr.io/integon/wso2mi:4.2.0
+    container_name: mi-mapper
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./mi-home/carbonapps:/home/wso2carbon/wso2mi-4.2.0/repository/deployment/server/carbonapps
+      - ./mi-home/lib:/home/wso2carbon/wso2mi-4.2.0/lib
+      - ./mi-home/conf/deployment.toml:/home/wso2carbon/wso2mi-4.2.0/conf/deployment.toml:ro
+      - ./mi-home/conf/log4j2.properties:/home/wso2carbon/wso2mi-4.2.0/conf/log4j2.properties:ro
+    networks:
+      - mi-network
+
+  fh:
+    depends_on:
+      mi:
+        condition: service_healthy
+    image: docker.io/integonio/filehub:0.0.1
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./fh-home/conf/filehub.conf:/filehub.conf:ro
+      - ./fh-home/data/IN:/fh-home/data/IN
+      - ./fh-home/data/OUT:/fh-home/data/OUT
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://mi:8080/data-mapper/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - mi-network
+
+networks:
+  mi-network:
+    driver: bridge
