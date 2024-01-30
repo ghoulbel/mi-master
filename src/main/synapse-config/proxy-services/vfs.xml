@@ -13,8 +13,10 @@
             <property name="filename" expression="get-property('transport','FILE_NAME')" />
             <property name="filename" expression="fn:concat(fn:substring-before($ctx:filename, '.csv'), '.xml')" />
             <property name="transport.vfs.ReplyFileName" expression="$ctx:filename" scope="transport"/>
+
             <property action="set" name="OUT_ONLY" value="true"/>
             <property name="ClientApiNonBlocking" value="true" scope="axis2" action="remove"/>
+            
             <datamapper config="gov:datamapper/schema/mappingconfig.dmc" inputSchema="gov:datamapper/schema/mappingconfig_inputSchema.json" inputType="CSV" outputSchema="gov:datamapper/schema/mappingconfig_outputSchema.json" outputType="XML"/>
             <send>
                 <endpoint>
