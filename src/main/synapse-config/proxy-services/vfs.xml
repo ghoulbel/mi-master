@@ -1,0 +1,21 @@
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="vfs-proxy" transports="vfs">
+    <parameter name="transport.vfs.FileURI">file:///data/IN</parameter>        
+    <parameter name="transport.vfs.ContentType">text/plain</parameter>
+    <parameter name="transport.vfs.FileNamePattern">.*\.csv</parameter>
+    <parameter name="transport.PollInterval">15</parameter>
+    <parameter name="transport.vfs.Streaming">true</parameter>
+    <parameter name="transport.vfs.MoveAfterProcess">file:///data/IN/archive</parameter>            
+    <parameter name="transport.vfs.MoveAfterFailure">file:///data/IN/fail</parameter>          
+    <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+    <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+    <target>
+         <inSequence>
+            <datamapper config="gov:datamapper/schema/mappingconfig.dmc" inputSchema="gov:datamapper/schema/mappingconfig_inputSchema.json" inputType="CSV" outputSchema="gov:datamapper/schema/mappingconfig_outputSchema.json" outputType="XML"/>
+            <send>
+                <endpoint>
+                    <address uri="vfs:file:///data/OUT"/> 
+                </endpoint>
+            </send>
+        </inSequence>
+    </target>
+</proxy>
